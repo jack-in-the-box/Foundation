@@ -133,12 +133,12 @@ select
     case
         when name.nspname = 'pg_catalog' then typ.typname
         else format('%s.%s', name.nspname, typ.typname)
-    end as "type",
-    def.adsrc        as "default",
-    att.attnotnull   as "is_notnull",
-    dsc.description  as "comment",
-    att.attnum       as "position",
-    att.attnum = any(ind.indkey) as "is_primary"
+    end                                 as "type",
+    pg_get_expr(def.adbin, def.adrelid) as "default",
+    att.attnotnull                      as "is_notnull",
+    dsc.description                     as "comment",
+    att.attnum                          as "position",
+    att.attnum = any(ind.indkey)        as "is_primary"
 from
   pg_catalog.pg_attribute att
     join pg_catalog.pg_type  typ  on att.atttypid = typ.oid
