@@ -35,9 +35,13 @@ class ResultHandler
      */
     public function __construct($result_resource)
     {
+        if ($result_resource instanceof \PgSql\Result) {
+            return;
+        }
+
         if (!is_resource($result_resource) || get_resource_type($result_resource) !== 'pgsql result') {
             throw new \InvalidArgumentException(sprintf(
-                "Given handler is not a resource of a pgsql result ('%s' given).",
+                "Given handler is not a resource of a pgsql result nor a PgSql\Result ('%s' given).",
                 gettype($result_resource)
             ));
         }
